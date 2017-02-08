@@ -20,7 +20,7 @@
     });
 
     $app->post("/jobs", function() use($app) {
-        $job = new Job($_POST['company'], ['date_range'], ['position']);
+        $job = new Job($_POST['company'], $_POST['date_range'], $_POST['position']);
         $job->save();
         return $app['twig']->render('create_job.html.twig', array('newjob' => $job));
     });
