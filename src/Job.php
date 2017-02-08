@@ -42,5 +42,10 @@ class Job
         return $this->position;
     }
 
+    function save()
+    {
+        array_push($_SESSION['list_of_jobs'], $this);
+    }
+
 }
 ?>
