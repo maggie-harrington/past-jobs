@@ -10,9 +10,24 @@
     }
 
     $app = new Silex\Application();
+    $app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/../views'
+    ));
 
-    $app->get("/", function() {
-        return "Home";
+
+    $app->get("/", function() use ($app) {
+        return $app['twig']->render('jobs.html.twig', array('jobs' => Job::getAll()));
+    });
+
+    $app->post("/jobs", function() use($app) {
+        $job = new Job($_POST['company'], ['date_range'], ['position']);
+        $job->save();
+        return $app['twig']->render('create_job.html.twig', array('newjob' => $job));
+    });
+
+    $app->post("/delete_jobs", function() use ($app) {
+        Job::deleteAll();
+        return $app['twig']->render('delete_jobs.html.twig');
     });
 
     return $app;
